@@ -1,5 +1,5 @@
 # Karachan - new imageboard
-karachan is my messy little old project from a year ago, a stripped-down, turbo-simplified fork of vichan that's way smaller, way meaner, and tries to fix some of the flaws with vichan/tinyboard to fix issues. i ripped out a ton of ancient bloat, custom permissions, added post approval so you can finally stop bots and illegal material, threw in some basic browser fingerprinting to spot ban evaders and filter spam easier, and sprinkled a few other QoL goodies on top. it's still a chaotic piece of shit however!
+karachan is my messy little old project from a year ago, a stripped-down, turbo-simplified fork of vichan that's way smaller, way meaner, and tries to fix some of the flaws with vichan/tinyboard to fix issues. i ripped out a ton of ancient bloat, custom permissions, added post approval so you can finally stop bots and illegal material, threw in some basic browser fingerprinting (though easy to defeat, releasing the source here will have the implication of leaking the methods utilized, but whatever) to spot ban evaders and filter spam easier, and sprinkled a few other QoL goodies on top. it's still a chaotic piece of shit however!
 
 I will not be responding to issues or pull requests or any contribution ideas here, this is a public source release. I don't care what you do with it, if you want to make some cancerous soy splinter or whatever that's up to you but I don't really care. Have fun I guess. The codebase is tuned to my own liking, you will have to change a bunch of stuff to make it feel like yours, but otherwise it's alright.
 
@@ -36,11 +36,13 @@ It's up to you to provide a proxy configuration (for nginx or whatever), you can
 docker compose up --build
 ```
 
+Then head to 127.0.0.1:8080/install.php and proceed with installation. No other steps required. It will create a default admin account named "Kara" with the password "08uCGvS1bF1tE45v6bPKNH".
+
 ## Cleaning docker
 docker rm -f $(docker ps -aq)
 docker rmi -f $(docker images -q)
 docker system prune -a --volumes
 
 ## Docker setup
-docker-compose down -v
+docker compose down -v
 docker compose up --build

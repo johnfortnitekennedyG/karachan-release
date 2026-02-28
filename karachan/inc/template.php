@@ -127,15 +127,6 @@ class Mephboard extends Twig\Extension\AbstractExtension
 		);
 	}
 
-	/**
-	* Returns the name of the extension.
-	*
-	* @return string The extension name
-	*/
-	public function getName()
-	{
-		return 'mephboard';
-	}
 }
 
 function twig_push_filter($array, $value) {

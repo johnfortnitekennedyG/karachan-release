@@ -35,7 +35,8 @@
 			<table border="0" cellpadding="4">
 				{% for row in config.permissions|batch(4, null) %}
 					<tr>
-						{% for name, flag in row if name is not null %}
+					{% for name, flag in row %}
+						{% if name is not null %}
 							<td>
 								<label>
 									<input type="checkbox" name="perm_{{ name }}" value="1"
@@ -43,7 +44,8 @@
 									{{ name }}
 								</label>
 							</td>
-						{% endfor %}
+						{% endif %}
+					{% endfor %}
 					</tr>
 				{% endfor %}
 			</table>
@@ -95,4 +97,3 @@
 		<a href="?/log:{{ user.username|e }}">View more logs for this user.</a>
 	</p>
 {% endif %}
-
