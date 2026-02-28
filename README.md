@@ -3,7 +3,11 @@ karachan is my messy little old project from a year ago, a stripped-down, turbo-
 
 I will not be responding to issues or pull requests or any contribution ideas here, this is a public source release. I don't care what you do with it, if you want to make some cancerous soy splinter or whatever that's up to you but I don't really care. Have fun I guess. The codebase is tuned to my own liking, you will have to change a bunch of stuff to make it feel like yours, but otherwise it's alright.
 
-This was used to make the old and new iteration of gemjak.party - a splinter I had something to do with for a while until I didn't.
+This was used to make the old and new iteration of gemjak.party - a splinter I had something to do with for a while until I didn't. I've released it now because I don't want others taking credit for it (as dumb as that sounds) and because I don't really care about this kinda shit anymore.
+
+## Screenshots
+![Moderation showcase](./screenshots/example.png)
+![New permissions system](./screenshots/users.png)
 
 ## Installation (Ubuntu)
 ```bash

@@ -22,13 +22,14 @@
 set -e
 
 # config vars
+# (whoops, had left some stuff in here, most of these links/passwords are not used anymore though, so do what you want with this LOL)
 MYSQL_ROOT_PASSWORD="coG6AGYEYuReAKKmFejxrydz"
 MYSQL_DATABASE="karachan"
 MYSQL_USER="elias"
 MYSQL_PASSWORD="XfYJl0bi7YPT79OYTu4BDhRb"
 TARGET_LOCATION="/var/www/html"
-DISCORD_WEBHOOK_MOD="https://discord.com/api/webhooks/1399668665896534037/3Jxf77XckpCzSOGN4qiAzq7M_-62Uci0TZeVOF9E8R8zeTAXT7zr5IfphqGZ2PaWHubB"
-DISCORD_WEBHOOK_POSTS="https://discord.com/api/webhooks/1422339740702867658/0gwov4bNXIATNBAoVCssQB5DVAFOZNBurQDmW3o0edQkJdqA0V-jC1kygwXN_BIqo3m2"
+DISCORD_WEBHOOK_MOD="https://discord.com/api/webhooks/"
+DISCORD_WEBHOOK_POSTS="https://discord.com/api/webhooks/"
 KARACHAN_DOMAIN="https://avackusniche.org"
 
 # php version check
