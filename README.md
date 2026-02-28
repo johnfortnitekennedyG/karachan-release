@@ -5,6 +5,8 @@ I will not be responding to issues or pull requests or any contribution ideas he
 
 This was used to make the old and new iteration of gemjak.party - a splinter I had something to do with for a while until I didn't. I've released it now because I don't want others taking credit for it (as dumb as that sounds) and because I don't really care about this kinda shit anymore.
 
+Article: https://avackusniche.org/posts/karachan/
+
 ## Screenshots
 ![Moderation showcase](./screenshots/example.png)
 ![New permissions system](./screenshots/users.png)
