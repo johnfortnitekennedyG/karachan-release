@@ -1,0 +1,41 @@
+{
+    "name": "karachan/fork",
+    "description": "karachan imageboard",
+    "type": "project",
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-mbstring": ">=7.4",
+        "ext-pdo": ">=7.4",
+        "twig/twig": "^2.9",
+        "lifo/ip": "^1.0",
+        "matthiasmullie/minify": "^1.3",
+        "geoip/geoip": "^1.17",
+	    "ext-imagick": "*",
+        "erusev/parsedown":  "^1.7.4"
+    },
+    "autoload": {
+        "classmap": ["inc/"],
+        "files": [
+            "inc/bootstrap.php",
+            "inc/display.php",
+            "inc/template.php",
+            "inc/database.php",
+            "inc/users.php",
+            "inc/functions/security.php",
+            "inc/functions/shared.php",
+            "inc/functions/format.php",
+            "inc/functions/posts.php",
+            "inc/functions/boards.php",
+            "inc/functions/generation.php",
+            "inc/functions/filehandling.php",
+            "inc/functions/net.php",
+            "inc/functions/num.php",
+            "inc/context.php"
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+{% apply spaceless %}
+{# tabs and new lines will be ignored #}
+<div class="post reply" id="reply_{{ post.id }}"><p class="intro">
+	{% endapply %}
+	{% if not index %}<a id="{{ post.id }}" class="post_anchor"></a>{% endif %}
+	{% include 'post/posterinfo.html' %}
+	</p>
+    {% include 'post/fileinfo.html' %} 
+	{% apply spaceless %}
+	{% include 'post/post_controls.html' %}
+	<div class="body" {% if post.files|length > 1 %}style="clear:both"{% endif %}>
+		{% endapply %}
+		{% if post.pendingapproval > 1 and not karadiap|hasPerm('approvecontent') %}<i>The contents of this post are pending approval.</i>{% else %}
+		{% if index %}{{ post.body|truncate_body(post.link) }}{% else %}{{ post.body }}{% endif %}{% endif %}
+		{% apply spaceless %}
+		{% if post.modifiers['ban message'] %}
+			{{ config.mod.ban_message|sprintf(post.modifiers['ban message']) }}
+		{% endif %}
+	</div>
+</div>
+<br/>
+{% endapply %}

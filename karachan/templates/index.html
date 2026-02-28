@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript">var {% if not no_post_form %}active_page = "index", board_name = "{{ board.uri }}";{% else %}active_page = "ukko";{% endif %}</script>
+	{% include 'header.html' %}
+	{% set meta_subject %}{% if config.thread_subject_in_title and thread.subject %}{{ thread.subject|e }}{% else %}{{ thread.body_nomarkup|remove_modifiers[:256]|e }}{% endif %}{% endset %}
+	<title>{{ board.url }} - {{ board.title|e }}</title>
+</head>
+<body class="ksogroup active-{% if not no_post_form %}index{% else %}ukko{% endif %}">
+	{% include 'top.html' %}
+	{% if not no_post_form %}
+		{% include 'post_form.html' %}
+	{% else %}
+		I'm your overboard boardlist. You can put here anything and I reside in templates/boardlist.html
+	{% endif %}
+
+	{% if config.global_message %}<hr /><div class="blotter">{{ config.global_message }}</div>{% endif %}
+	<hr />
+	<form name="postcontrols" action="/post.php" method="post">
+	<input type="hidden" name="board" value="{{ board.uri }}" />
+	{{ body }}
+	{% include 'report_delete.html' %}
+	</form>
+
+	<div class="pages">
+		{{ btn.prev }} {% for page in pages %}
+		 [<a {% if page.selected %}class="selected"{% endif %}{% if not page.selected %}href="{{ page.link }}"{% endif %}>{{ page.num }}</a>]{% if loop.last %} {% endif %}
+		{% endfor %} {{ btn.next }}
+		{% if config.file_catalog %}
+			 | <a href="/{% if karadiap %}{{ config.file_account }}?/{% endif %}{{ board.dir }}{{ config.file_catalog }}">Catalog</a>
+		{% endif %}
+	</div>
+	{% include 'footer.html' %}
+</body>
+</html>

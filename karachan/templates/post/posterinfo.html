@@ -1,0 +1,37 @@
+<input type="checkbox" class="delete" name="delete_{{ post.id }}" id="delete_{{ post.id }}" />
+<label for="delete_{{ post.id }}">
+	{% if post.subject|length > 0 %}{# show subject #}<span class="subject">{{ post.subject|bidi_cleanup }}</span> {% endif %}
+	{% if post.pamped > 0 %}{# start email #}<a class="email" href="mailto:sage">{% endif %}
+	<span class="name">{{ post.name|bidi_cleanup }}</span>
+	{% if post.trip|length > 0 %}<span class="trip">{{ post.trip }}</span>{% endif %}
+	{% if post.pamped > 0 %}{# end email #}</a>{% endif %}
+	{% if post.capcode %} <span class="capcode">## {{ post.capcode }}</span>{% endif %}
+	{% if karadiap|hasPerm('view_notes') or karadiap|hasPerm('view_ban') %} [<a class="ip-link" style="margin:0;" href="?/IP/{{ post.ip|cloak_ip }}">{% if karadiap|hasPerm('show_ip') %}{{ post.ip }}{% else %}{{ post.ip|cloak_ip }}{% endif %}</a>]{% endif %}
+	{% if karadiap|hasPerm('view_pearlsecurity') %}
+		{% if post.pearlsecurity %}
+			{% for key, value in post.pearlsecurity %} [
+				{% if key == 'basic' %}<span style="color:#1d8a26">
+				{% elseif key == 'password' %}<span style="color:#c17006">
+				{% elseif key == 'discord' %}<span style="color:#a600ac">
+				{% elseif key == 'tuxler' %}<span style="color:#ff0000">
+				{% elseif key == 'vpn' %}<span style="color:#a88a26">
+				{% elseif key == 'incognito' %}<span style="color:#200080">
+				{% elseif key == 'user' %}<span style="color:#aefaff">
+				{% else %}<span style='color:#404040'>{% endif %}
+				{{ value }}</span>]
+			{% endfor %}
+		{% else %} [<SPAN STYLE="color:#ff0000">Untracked</SPAN>]{% endif %}
+	{% endif %}
+	{% if (config.country_flags or karadiap|hasPerm('show_ip')) and post.modifiers.flag %} <img class="flag flag-{{ post.modifiers.flag }}" src="assets/blank.gif" style="width:16px;height:11px;" {% if post.modifiers['flag alt'] %} alt="{{ post.modifiers['flag alt'] | e('html_attr') }}" title="{{ post.modifiers['flag alt'] | e('html_attr') }}" {% endif %}>{% endif %}
+	{% if post.sticky %} <img class="kch information" src="assets/blank.gif">{% endif %}
+	{% if post.locked %} <img class="kch lock" src="assets/blank.gif">{% endif %}
+	{% if post.pamped and (config.mod.view_bumplock < 0 or karadiap|hasPerm('view_bumplock')) %} <img class="kch arrow_down" src="assets/blank.gif">{% endif %}
+	{% if post.cycle %} <img class="kch control_repeat" src="assets/blank.gif">{% endif %} <time datetime="{{ post.time|date('Y-m-d\\TH:i:s\Z') }}">{{ post.time|date(config.post_date) }}</time>
+</label>
+{% apply spaceless %}
+{% if config.poster_ids %}
+	{% if post.thread %} <span class="poster_id">{{ post.ip|poster_id(post.thread) }}</span>{% else %} <span class="poster_id">{{ post.ip|poster_id(post.id) }}</span>{% endif %}
+{% endif %}&nbsp;
+<a class="post_no" id="post_no_{{ post.id }}" onclick="highlightReply({{ post.id }})" href="{% if isnoko50 %}{{ post.link('', '50') }}{% else %}{{ post.link }}{% endif %}">No.</a>
+<a class="post_no" onclick="citeReply({{ post.id }})" href="{% if isnoko50 %}{{ post.link('q', '50') }}{% else %}{{ post.link('q') }}{% endif %}">{{ post.id }}</a>
+{% endapply %}

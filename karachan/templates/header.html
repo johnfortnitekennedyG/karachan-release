@@ -1,0 +1,16 @@
+<link rel="stylesheet" media="screen" href="/style.css?v={{ config.resource_version }}">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="referrer" content="no-referrer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Avackus' Niche" />
+<meta property="og:description" content="You love it, you want it!" />
+<meta property="og:url" content="{{ config.domain }}" />
+<meta property="og:image" content="full thumbnail path" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+<script type="text/javascript">
+	var inMod = {% if karadiap %}true{% else %}false{% endif %};
+	var modRoot = inMod ? "/{{ config.file_account }}?" : "";
+</script>
+{% if not nojavascript %}
+	<script type="text/javascript" src="/main.js?v={{ config.resource_version }}" data-resource-version="{{ config.resource_version }}"></script>
+{% endif %}

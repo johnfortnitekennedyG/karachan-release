@@ -1,0 +1,18 @@
+<div style="text-align:center">
+	<h2 style="margin:20px 0">{{ message }}</h2>
+	{% if board %}
+		<p>
+			<a href="/{% if karadiap %}{{ config.file_account }}?/{% endif %}{{ board.dir }}{{ config.file_index }}">
+				Go back
+			</a>
+		</p>
+	{% endif %}
+</div>
+{% if debug and config.debug %}
+	<hr>
+	<h3>Error information</h3>
+	<pre style="white-space:pre-wrap;font-size: 10px;">
+		{{ debug }}
+	</pre>
+	<hr>
+{%  endif %}

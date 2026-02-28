@@ -1,0 +1,37 @@
+# static html and json
+/karachan/*/*.html
+/karachan/krth/
+/karachan/stnk/
+/karachan/*/config.php
+/karachan/*.html
+/karachan/vendor/
+/karachan/tmp/
+/karachan/composer.lock
+!/karachan/composer.json
+
+# include some files though
+!/karachan/templates/*.html
+!/karachan/inc/config.php
+!/karachan/assets/kspcplayer.html
+
+# .installed
+/karachan/.installed
+
+# auto-generated script files
+/karachan/main.js
+/karachan/style.css
+/karachan/index.css
+
+# other stuff
+.DS_Store
+.htaccess
+thumbs.db
+Icon?
+Thumbs.db
+database
+.env
+*.patch
+*.diff
+*.rej
+*.orig
+*~

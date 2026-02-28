@@ -1,0 +1,73 @@
+<form name="post" onsubmit="return doPost(this);" enctype="multipart/form-data" action="/post.php" method="post">
+{% if id %}<input type="hidden" name="thread" value="{{ id }}">{% endif %}
+<input type="hidden" name="board" value="{{ board.uri }}">
+{% if current_page %}
+<input type="hidden" name="page" value="{{ current_page }}">
+{% endif %}
+<table>
+	{% if not config.field_disable_name or (karadiap|hasPerm('bypass_field_disable')) %}
+		<tr><th>Name</th><td><input type="text" name="name" size="25" maxlength="35" autocomplete="off">
+	{% endif %}
+	<select name="pamped" id="pamped_selectbox" autocomplete="off"><option value="0"></option><option value="1">sage</option></select></td></tr>
+	{% if not (config.field_disable_subject or (id and config.field_disable_reply_subject)) or (karadiap|hasPerm('bypass_field_disable')) %}
+		<tr><th>Subject</th><td><input style="float:left;" type="text" name="subject" size="25" maxlength="100" autocomplete="off">
+		<input accesskey="s" style="margin-left:2px;" type="submit" name="post" value="{% if id %}{{ config.button_reply }}{% else %}{{ config.button_newtopic }}{% endif %}" />
+		</td></tr>
+	{% endif %}
+	<tr>
+		<th>Comment</th>
+		<td><textarea name="body" id="body" rows="5" cols="35"></textarea></td>
+	</tr>
+	<tr id="upload">
+		<th>File</th>
+		<td>
+			<input type="file" name="file" id="upload_file">
+			<script type="text/javascript">if (typeof init_file_selector !== 'undefined') init_file_selector({{ config.max_images }});</script>
+		</td>
+	</tr>
+	{% if config.enable_embedding %}
+	<tr id="upload_embed">
+		<th>Embed</th>
+		<td><input type="text" name="embed" value="" size="30" maxlength="120" autocomplete="off"></td>
+	</tr>
+	{% endif %}
+	<tr>
+		<th>Flags</th>
+		<td>
+			<div class="center">
+				<label for="spoiler">Spoiler Image</label>
+				<input title="Spoiler" type="checkbox" name="spoiler" id="spoiler"><br>
+			</div>
+			{% if not id and karadiap|hasPerm('sticky') %}<div class="center">
+				<label for="sticky">Sticky</label>
+				<input title="Sticky" type="checkbox" name="sticky" id="sticky"><br>
+			</div>{% endif %}
+			{% if not id and karadiap|hasPerm('lock') %}<div class="center">
+				<label for="lock">Lock</label><br>
+				<input title="Lock" type="checkbox" name="lock" id="lock">
+			</div>{% endif %}
+			{% if karadiap|hasPerm('rawhtml') %}<div class="center">
+				<label for="raw">Raw HTML</label><br>
+				<input title="Raw HTML" type="checkbox" name="raw" id="raw">
+			</div>{% endif %}
+		</td>
+	</tr>
+	{% if not config.field_disable_password or (karadiap|hasPerm('bypass_field_disable')) %}<tr>
+		<th>Password</th>
+		<td>
+			<input type="text" name="password" value="" size="12" maxlength="18" autocomplete="off">
+			<span class="unimportant">(For file deletion.)</span>
+		</td>
+	</tr>{% endif %}
+	{% if config.security_question %}<tr>
+		<th>Security question</th>
+		<td>
+			<input type="text" name="security_question" value="" size="12" maxlength="18" autocomplete="off" placeholder="{{ config.security_question.question }}">
+		</td>
+	</tr>{% endif %}
+</table>
+</form>
+
+<script type="text/javascript">{% verbatim %}
+rememberStuff();
+{% endverbatim %}</script>

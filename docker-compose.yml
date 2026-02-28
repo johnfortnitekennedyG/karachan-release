@@ -1,0 +1,36 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./karachan:/var/www/html
+    depends_on:
+      - db
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: elias
+      MYSQL_DATABASE: karachan
+      MYSQL_PASSWORD: stinkybutt
+    command: bash -c "composer install && php-fpm"
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./karachan:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+
+  db:
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: eliasthebird
+      MYSQL_DATABASE: karachan
+      MYSQL_USER: elias
+      MYSQL_PASSWORD: stinkybutt
+    volumes:
+      - ./database:/var/lib/mysql

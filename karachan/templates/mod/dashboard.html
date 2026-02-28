@@ -1,0 +1,62 @@
+<div class="welcome">
+	Welcome back, {{karadiap.username}}~ 
+</div>
+<div class="fieldset-container">
+<fieldset>
+<legend>Boards</legend>
+<ul>
+	{% for board in boards %}
+		<li>
+			<a href="?/{{ config.board_path|sprintf(board.uri) }}{{ config.file_index }}">{{ config.board_abbreviation|sprintf(board.uri) }}</a> - 
+			{{ board.title|e }}
+			{% if board.subtitle %}<small>&mdash;{{ board.subtitle|e }}</small>{% endif %}
+			{% if board.owner %} <i>(Owned by user #{{ board.owner }})</i>{% endif %}
+			{% if karadiap|hasPerm('manageboards') or board.owner == karadiap.id %} <a href="?/edit/{{ board.uri }}"><small>[edit]</small></a>{% endif %}
+		</li>
+	{% endfor %}
+	{% if karadiap|hasPerm('newboard') or karadiap|hasPerm('userboards') %}
+		<li style="margin-top:15px"><a href="?/new-board"><strong>Create new board / userboard</strong></a> ({% if personalboard %}{{ personalboard.uri }}{% else %}No personal userboard.{% endif %})</li>
+	{% endif %}
+</ul>
+</fieldset>
+
+<fieldset>
+<legend>User</legend>
+<ul>
+	<li><a href="?/usernewsboard">News</a></li>
+	{% if karadiap|hasPerm('reports') %}
+		<li>
+			{% if reports > 0 %}<strong>{% endif %}
+				<a href="?/reports">Report queue ({{ reports }})</a>
+			{% if reports > 0 %}</strong>{% endif %}
+		</li>
+	{% endif %}
+	{% if karadiap|hasPerm('view_banlist') %}
+		<li><a href="?/bans">Ban list</a></li>
+	{% endif %}
+	{% if config.ban_appeals and karadiap|hasPerm('view_ban_appeals') %}
+		{% if appeals > 0 %}<strong>{% endif %}
+			<li><a href="?/ban-appeals">Ban appeals</a></li>
+		{% if appeals > 0 %}</strong>{% endif %}
+	{% endif %}
+	{% if karadiap|hasPerm('editusers') %}
+		<li><a href="?/users">Manage users</a></li>
+	{% elseif karadiap|hasPerm('change_password') %}
+		<li><a href="?/users/{{ karadiap.id }}">Change password</a></li>
+	{% endif %}
+	{% if karadiap|hasPerm('approvecontent') %}
+		<li><a href="?/pending">View pending posts</a></li>
+	{% endif %}
+	{% if karadiap|hasPerm('modlog') %}
+		<li><a href="?/log">Moderation log</a></li>
+	{% endif %}
+	{% if karadiap|hasPerm('rebuild') %}
+		<li><a href="?/rebuild">Rebuild</a></li>
+	{% endif %}
+	<li><a href="?/logout/{{ logout_token }}">Logout</a></li>
+</ul>
+</fieldset>
+</div>
+<div class="search">
+	{% if karadiap|hasPerm('search') %}{% include 'mod/search_form.html' %}{% endif %}
+</div>

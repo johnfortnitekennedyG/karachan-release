@@ -1,0 +1,67 @@
+{% if karadiap %}
+
+<span class="controls {% if not post.thread %}op{% endif %}">
+{% if post.pendingapproval > 0 and karadiap|hasPerm('approvecontent') %}
+	{{ secure_link_confirm(config.mod.link_approvecontent, 'Approve content', 'Are you sure you want to approve this post?', board.dir ~ 'approve/' ~ post.id ) }}&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('spoilerimage') %}
+	{{ secure_link_confirm(config.mod.link_spoilerimage, 'Spoiler post', 'Are you sure you want to spoiler this post?', board.dir ~ 'spoiler/' ~ post.id ) }}&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('delete') or board.owner == karadiap.id %}
+	{{ secure_link_confirm(config.mod.link_delete, 'Delete', 'Are you sure you want to delete this?', board.dir ~ 'delete/' ~ post.id) }}&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('deletebyip') %}
+	{{ secure_link_confirm(config.mod.link_deletebyip, 'Delete all posts by IP', 'Are you sure you want to delete all posts by this IP address?', board.dir ~ 'deletebyip/' ~ post.id) }}&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('deletebyip_global') %}
+	{{ secure_link_confirm(config.mod.link_deletebyip_global, 'Delete all posts by IP across all boards', 'Are you sure you want to delete all posts by this IP address, across all boards?', board.dir ~ 'deletebyip/' ~ post.id ~ '/global') }}&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('ban') %}
+	<a title="Ban" href="?/{{ board.dir }}ban/{{ post.id }}">{{ config.mod.link_ban }}</a>&nbsp;
+{% endif %}
+{% if karadiap|hasPerm('bandelete') %}
+	<a title="Ban & Delete" href="?/{{ board.dir }}bandelete/{{ post.id }}">{{ config.mod.link_bandelete }}</a>&nbsp;
+{% endif %}
+
+{% if not post.thread %}
+{% if karadiap|hasPerm('sticky') %}
+	{% if post.sticky %}
+	<a title="Make thread not sticky" href="?/{{ secure_link(board.dir ~ 'unsticky/' ~ post.id) }}">{{ config.mod.link_desticky }}</a>&nbsp;
+	{% else %}
+	<a title="Make thread sticky" href="?/{{ secure_link(board.dir ~ 'sticky/' ~ post.id) }}">{{ config.mod.link_sticky }}</a>&nbsp;
+	{% endif %}
+{% endif %}
+{% if karadiap|hasPerm('bumplock') %}
+	{% if post.pamped %}
+	<a title="Allow thread to be bumped" href="?/{{ secure_link(board.dir ~ 'bumpunlock/' ~ post.id) }}">{{ config.mod.link_bumpunlock }}</a>&nbsp;
+	{% else %}
+	<a title="Prevent thread from being bumped" href="?/{{ secure_link(board.dir ~ 'bumplock/' ~ post.id) }}">{{ config.mod.link_bumplock }}</a>&nbsp;
+	{% endif %}
+{% endif %}
+{% if karadiap|hasPerm('lock') %}
+	{% if post.locked %}
+	<a title="Unlock thread" href="?/{{ secure_link(board.dir ~ 'unlock/' ~ post.id) }}">{{ config.mod.link_unlock }}</a>&nbsp;
+	{% else %}
+	<a title="Lock thread" href="?/{{ secure_link(board.dir ~ 'lock/' ~ post.id) }}">{{ config.mod.link_lock }}</a>&nbsp;
+	{% endif %}
+{% endif %}
+
+{% endif %}
+{% if karadiap|hasPerm('move') %}
+	{% if not post.thread %}
+		<a title="Move thread to another board" href="?/{{ board.dir }}move/{{ post.id }}">{{ config.mod.link_move }}</a>&nbsp;
+	{% endif %}
+{% endif %}
+{% if karadiap|hasPerm('cycle') %}
+	{% if post.cycle %}
+	<a title="Make thread not cycle" href="?/{{ secure_link(board.dir ~ 'uncycle/' ~ post.id) }}">{{ config.mod.link_uncycle }}</a>&nbsp;
+	{% else %}
+	<a title="Make thread cycle" href="?/{{ secure_link(board.dir ~ 'cycle/' ~ post.id) }}">{{ config.mod.link_cycle }}</a>&nbsp;
+	{% endif %}
+{% endif %}
+{% if karadiap|hasPerm('editpost') %}
+	<a title="Edit post" href="?/{{ board.dir }}edit{% if config.mod.raw_html_default %}_raw{% endif %}/{{ post.id }}">{{ config.mod.link_editpost }}</a>&nbsp;
+{% endif %}
+</span>
+
+{% endif %}

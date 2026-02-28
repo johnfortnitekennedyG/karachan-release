@@ -1,0 +1,52 @@
+{% apply spaceless %}
+{# tabs and new lines will be ignored #}
+
+<div class="thread" id="thread_{{ post.id }}" data-board="{{ board.uri }}">
+{% if not index %}<a id="{{ post.id }}" class="post_anchor"></a>{% endif %}
+
+{% endapply %}
+{% include 'post/fileinfo.html' %}
+<div class="post op" id="op_{{ post.id }}" {%if post.num_files > 1%}style='clear:both'{%endif%}><p class="intro">
+	{% include 'post/posterinfo.html' %}
+	{% apply spaceless %}
+	{% if index %}
+		<a href="{{ post.root }}{{ board.dir }}{{ getThreadFileLink(post) }}">[Reply]</a>
+	{% endif %}
+	{% if isnoko50 %}
+		<a href="{{ post.root }}{{ board.dir }}{{ getThreadFileLink(post) }}">[View All]</a>
+	{% endif %}
+	{% if hasnoko50 and not isnoko50 %}
+	<a href="{{ post.root }}{{ board.dir }}{{ getThreadFileLink(post, true) }}">
+		[Last {{ count }} Post{% if count != 1 %}s{% endif %}]
+	</a>
+	{% endif %}
+	{% include 'post/post_controls.html' %}
+	<div class="body">
+		{% endapply %}
+		{% if post.pendingapproval > 1 and not karadiap|hasPerm('approvecontent') %}<i>The contents of this post are pending approval.</i>{% else %}
+		{% if index %}{{ post.body|truncate_body(post.link) }}{% else %}{{ post.body }}{% endif %}{% endif %}
+		{% apply spaceless %}
+		{% if post.modifiers['ban message'] %}
+			{{ config.mod.ban_message|sprintf(post.modifiers['ban message']) }}
+		{% endif %}
+	</div>
+	{% if post.omitted or post.omitted_images %}
+		<span class="omitted">
+			{% if post.omitted %}
+				{% if post.omitted == 1 %}1 post{% else %}{{ post.omitted }} posts{% endif %}
+				{% if post.omitted_images %} and {% endif %}
+			{% endif %}
+			{% if post.omitted_images %}
+				{% if post.omitted_images == 1 %}1 image reply{% else %}{{ post.omitted_images }} image replies{% endif %}
+			{% endif %} omitted. Click reply to view.
+		</span>
+	{% endif %}
+{% if not index %}
+{% endif %}
+</div>{% endapply %}
+{% set hr = post.hr %}
+{% for post in post.posts %}
+	{% include 'post_reply.html' %}
+{% endfor %}
+<br class="clear"/>{% if hr %}<hr/>{% endif %}
+</div>

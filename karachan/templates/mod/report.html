@@ -1,0 +1,32 @@
+<div class="report">
+	<hr>
+	Board: <a href="?/{{ report.board }}/{{ config.file_index }}">{{ config.board_abbreviation|sprintf(report.board) }}</a>
+	<br>
+	Reason: {{ report.reason }}
+	<br>
+	Report date: {{ report.time|date(config.post_date) }}
+	<br>
+	{% if karadiap|hasPerm('show_ip') %}
+		Reported by: <a href="?/IP/{{ report.ip|cloak_ip }}">{{ report.ip|cloak_ip }}</a>
+		<br>
+	{% endif %}
+	{% if karadiap|hasPerm('report_dismiss') or karadiap|hasPerm('report_dismiss_ip') %}
+		<hr>
+		{% if karadiap|hasPerm('report_dismiss') %}
+			<a title="Discard abuse report" href="?/reports/{{ report.id }}/dismiss/{{ token }}">Dismiss</a>
+		{% endif %}
+		{% if karadiap|hasPerm('report_dismiss_ip') %}
+			{% if karadiap|hasPerm('report_dismiss') %}
+			 |&nbsp;
+			{% endif %}
+			<a title="Discard all abuse reports by this IP address" href="?/reports/{{ report.id }}/dismiss&amp;all/{{ token_all }}">Dismiss+</a>
+			{% endif %}
+		{% if karadiap|hasPerm('report_dismiss_post') %}
+			{% if karadiap|hasPerm('report_dismiss') %}
+			 |&nbsp;
+			{% endif %}
+			<a title="Dismissed all reports for the post" href="?/reports/{{ report.id }}/dismiss&amp;post/{{ token_post }}">Dismiss Post</a>
+		{% endif %}
+	{% endif %}
+</div>
+

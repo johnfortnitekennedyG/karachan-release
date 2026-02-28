@@ -1,0 +1,21 @@
+<form style="display:inline" action="?/search" method="post">
+	<label style="display:inline" for="search">Phrase:</label> 
+	<input id="search" name="query" type="text" size="60" value="{{ search_query|e }}">
+	<select name="type">
+		<option value="posts"{% if search_type == 'posts'%} selected{% endif %}>Posts</option>
+		{% if karadiap|hasPerm('view_notes') and karadiap|hasPerm('show_ip') %}
+			<option value="IP_notes"{% if search_type == 'IP_notes'%} selected{% endif %}>IP address notes</option>
+		{%  endif %}
+		{% if karadiap|hasPerm('view_pearlsecurity') and karadiap|hasPerm('show_ip') %}
+			<option value="security"{% if search_type == 'security'%} selected{% endif %}>Fingerprint/Security info</option>
+		{%  endif %}
+		{% if karadiap|hasPerm('view_banlist') %}
+			<option value="bans"{% if search_type == 'bans'%} selected{% endif %}>Bans</option>
+		{%  endif %}
+		{% if karadiap|hasPerm('modlog') %}
+			<option value="log"{% if search_type == 'log'%} selected{% endif %}>Moderation log</option>
+		{%  endif %}
+	</select>
+	<input type="submit" value="Search">
+</form>
+<p class="unimportant">(Search is case-insensitive and based on keywords. To match exact phrases, use "quotes". Use an asterisk (*) for wildcard.)</p>

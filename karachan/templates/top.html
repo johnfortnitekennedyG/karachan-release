@@ -1,0 +1,27 @@
+<div class="boardlist" id="top"></div>
+{% if board %}
+	<img class="board_image" src="/assets/banners/{{ board.uri }}.png" alt="" />
+	<header>
+		<h1>{{ board.url }} - {{ board.title|e }}</h1>
+		<div class="subtitle">
+			{% if board.subtitle %}{{ board.subtitle|e }}{% endif %}
+			<br>
+			{% if config.file_catalog %}
+				<a href="/{% if karadiap %}{{ config.file_account }}?/{% endif %}{{ board.dir }}{{ config.file_catalog }}">Catalog</a>
+			{% endif %}
+		</div>
+	</header>
+{% else %}
+	<img class="board_image" src="/assets/banners/ot.png" alt="" />
+	{% if title %}
+	<header>
+		<h1>{{ title }}</h1>
+		{% if subtitle %}<div class="subtitle">{{ subtitle }}</div>{% endif %}
+	</header>
+	{% endif %}
+{% endif %}
+{% if config.attention_bar %}
+	<div id="attention_bar"></div>
+	<form method="post" action="/attentionbar.php" id="attention_bar_form"><input id="attention_bar_input" name="text" value="" type="text"></form>
+{% endif %}
+{{ config.ad.top }}

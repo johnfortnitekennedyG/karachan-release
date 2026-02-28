@@ -1,0 +1,57 @@
+<div style="max-width:700px;margin:auto">
+	<h2 style="text-align:center">Pre-installation tests</h2>
+	<table class="modlog" style="margin-top:10px;max-width:600px">
+		<tr>
+			<th>Category</th>
+			<th>Test</th>
+			<th>Result</th>
+		</tr>
+		{% set errors = 0 %}
+		{% set warnings = 0 %}
+		{% for test in tests %}
+			<tr>
+				<td class="minimal"><strong>{{ test.category }}</strong></td>
+				<td>{{ test.name }}</td>
+				<td class="minimal" style="text-align:center">
+					{% if test.result %}
+						<img class="kch spellcheck" src="assets/blank.gif">
+					{% else %}
+						{% if test.required %}
+							{% set errors = errors + 1 %}
+							<img class="kch application_deleted" src="assets/blank.gif">
+						{% else %}
+							{% set warnings = warnings + 1 %}
+							<img class="kch application_error" src="assets/blank.gif">
+						{% endif %}
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+	{% if errors or warnings %}
+		<p><strong>There were {{ errors }} error(s) and {{ warnings }} warning(s).</strong></p>
+		<ul>
+			{% for test in tests %}
+				{% if not test.result %}
+					<li style="margin-bottom:5px">
+						{% if test.required %}
+							<img class="kch application_deleted" src="assets/blank.gif">
+						{% else %}
+							<img class="kch application_error" src="assets/blank.gif">
+						{% endif %}
+						{{ test.message }}
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+		{% if errors %}
+			<p style="text-align:center;color:#d00"><strong>Warning:</strong> Ignoring these problems is not recommended and may cause installation issues.</p>
+			<p style="text-align:center"><a href="?done=1"><button>Proceed Anyway</button></a></p>
+		{% else %}
+			<p style="text-align:center"><a href="?done=1"><button>Next</button></a></p>
+		{% endif %}
+	{% else %}
+		<p>There were no errors or warnings. Good!</p>
+		<p style="text-align:center"><a href="?done=1"><button>Next</button></a></p>
+	{% endif %}
+</div>

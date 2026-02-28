@@ -1,0 +1,38 @@
+<form method="post" action="?/bans">
+	<table class="ban-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>ipstart</th>
+				<th>ipend</th>
+				<th>created</th>
+				<th>expires</th>
+				<th>creator</th>
+				<th>reason</th>
+				<th>seen</th>
+				<th>unban</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for b in bans %}
+				<tr class="{{ b.active ? 'active' : 'expired' }}">
+					<td>{{ b.id }}</td>
+					<td>{{ b.ipstart ?? '—' }}</td>
+					<td>{{ b.ipend ?? '—' }}</td>
+					<td>{{ b.created ?? '—' }}</td>
+					<td>{{ b.expires }}</td>
+					<td>{{ b.creator }}</td>
+					<td>{{ b.reason|e }}</td>
+					<td>{{ b.seen }}</td>
+					<td><a href="?/unban/{{b.id}}">unban</a></td>
+				</tr>
+			{% else %}
+				<tr><td colspan="9">no bans on this page~</td></tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</form>
+
+<nav class="pager">
+	{% if page > 1 %}<a href="?/bans/{{ page-1 }}">« prev</a>{% endif %} <span>page {{ page }} / {{ pages }} ({{ total }} total)</span> {% if page < pages %}<a href="?/bans/{{ page+1 }}">next »</a>{% endif %}
+</nav>

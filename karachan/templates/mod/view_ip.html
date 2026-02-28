@@ -1,0 +1,144 @@
+{% for board_posts in posts %}
+	<fieldset>
+		<legend>
+			<a href="?/{{ config.board_path|sprintf(board_posts.board.uri) }}{{ config.file_index }}">
+				{{ config.board_abbreviation|sprintf(board_posts.board.uri) }}
+				 -
+				 {{ board_posts.board.title|e }}
+			</a>
+		</legend>
+		{{ board_posts.posts|join('<hr>') }}
+	</fieldset>
+{% endfor %}
+
+{% if karadiap|hasPerm('view_notes') %}
+	<fieldset id="notes">
+		<legend>
+			{% set notes_length = notes|length %}
+			<legend>notes: {{ notes_length }} on record</legend>
+		</legend>
+
+		{% if notes|length > 0 %}
+			<table class="modlog">
+				<tr>
+					<th>Staff</th>
+					<th>Note</th>
+					<th>Date</th>
+					{% if karadiap|hasPerm('remove_notes') %}
+						<th>Actions</th>
+					{% endif %}
+				</tr>
+				{% for note in notes %}
+					<tr>
+						<td class="minimal">
+							{% if note.username %}{{ note.username|e }}{% else %}<em>deleted?</em>{% endif %}
+						</td>
+						<td>
+							{{ note.body }}
+						</td>
+						<td class="minimal">
+							{{ note.time|date(config.post_date) }}
+						</td>
+						{% if karadiap|hasPerm('remove_notes') %}
+							<td class="minimal">
+								<a href="?/IP/{{ ip|cloak_ip|url_encode(true) }}/remove_note/{{ note.id }}">
+									<small>[remove]</small>
+								</a>
+							</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
+
+		{% if karadiap|hasPerm('create_notes') %}
+			<form action="" method="post" style="margin:0">
+				<input type="hidden" name="token" value="{{ security_token }}">
+				<table>
+					<tr>
+						<th>Staff</th>
+						<td>{{ karadiap.username|e }}</td>
+					</tr>
+					<tr>
+						<th>
+							<label for="note">Note</label>
+						</th>
+						<td>
+							<textarea id="note" name="note" rows="5" cols="30"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" value="New note"></td>
+					</tr>
+				</table>
+			</form>
+		{% endif %}
+	</fieldset>
+{% endif %}
+
+
+{% if bans|length > 0 and karadiap|hasPerm('view_ban') %}
+	<fieldset id="bans">
+		{% set bans_length = bans|length %}
+		<legend>bans: {{ bans_length }} on record</legend>
+
+		{% for ban in bans %}
+			<form action="" method="post" style="text-align:center">
+				<input type="hidden" name="token" value="{{ security_token }}">
+				{% include 'mod/ban_history.html' %}
+				<input type="hidden" name="ban_id" value="{{ ban.id }}">
+				<input type="submit" name="unban" value="Remove ban">
+				<input type="submit" name="edit_ban" value="Edit ban">
+			</form>
+		{% endfor %}
+	</fieldset>
+{% endif %}
+
+{% if karadiap|hasPerm('ban') %}
+	<fieldset>
+		<legend>New ban</legend>
+		{% set redirect = '?/IP/' ~ ip|cloak_ip ~ '#bans' %}
+		{% include 'mod/ban_form.html' with { 'reasons': config.premade_ban_reasons } %}
+	</fieldset>
+{% endif %}
+
+{% if logs|length > 0  %}
+	<fieldset id="history">
+		<legend>History</legend>
+		<table class="modlog" style="width:100%">
+			<tr>
+				<th>Staff</th>
+				<th>Time</th>
+				<th>Board</th>
+				<th>Action</th>
+			</tr>
+			{% for log in logs %}
+				<tr>
+					<td class="minimal">
+						{% if log.username %}
+							<a href="?/log:{{ log.username|e }}">{{ log.username|e }}</a>
+						{% elseif log.mod == -1 %}
+							<em>system</em>
+						{% else %}
+							<em>deleted?</em>
+						{% endif %}
+					</td>
+					<td class="minimal">
+						<span title="{{ log.time|date(config.post_date) }}">{{ log.time|ago }}</span>
+					</td>
+					<td class="minimal">
+						{% if log.board %}
+							<a href="?/{{ config.board_path|sprintf(log.board) }}{{ config.file_index }}">{{ config.board_abbreviation|sprintf(log.board) }}</a>
+						{% else %}
+							-
+						{% endif %}
+					</td>
+					<td>
+						{{ log.text }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</fieldset>
+{% endif %}

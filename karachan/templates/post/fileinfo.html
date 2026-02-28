@@ -1,0 +1,44 @@
+{% if post.embed %}
+{{ post.embed }}
+{% else %}
+<div class="files {% if post.num_files > 1 %} multifile{% endif %}">
+{% for file in post.files %}
+<div class="file{% if post.num_files > 1 %} multifile" style="width:{{ file.thumbwidth + 40 }}px"{% else %}"{% endif %}>
+{% if post.pendingapproval > 0 and not karadiap|hasPerm('approvecontent') %}
+	<img class="post-image pending" src="/{{ config.image_pending }}" alt="" />
+{% elseif file.file == 'deleted' %}
+	<img class="post-image deleted" src="/{{ config.image_deleted }}" alt="" />
+{% else %}
+	<p class="fileinfo">File: <a href="/stnk/{{ file.file }}">{{ file.file }}</a>
+	{% if post.pendingapproval > 0 %}
+		<SPAN STYLE="color:#ff00aa"> (Pending moderator approval) </SPAN>
+	{% endif %}
+	<span class="unimportant"> ({{ file.size|filesize }}{% if file.width and file.height %}, {{ file.width}}x{{ file.height }}{% endif %})</span>
+	{% if file.is_an_image %} <span class='image_id'><a href="http://imgops.com/{{ config.domain }}/stnk/{{ file.file }}" target="_blank">ImgOps</a></span>{% endif %}
+	{% if karadiap|hasPerm('deletefile') and file.file != 'deleted' %}
+		<span class="controls">
+			{{ secure_link_confirm(config.mod.link_deletefile, 'Delete file', 'Are you sure you want to delete this file?', board.dir ~ 'deletefile/' ~ post.id ~ '/' ~ loop.index0 ) }}
+		</span>
+	{% endif %}
+	</p>
+
+	{% if post.imagespoilered > 0 %}
+		<a href="/stnk/{{ file.file }}" target="_blank"><img class="post-image" src="/{{ config.spoiler_image }}" alt=""></a>
+	{% elseif file.file|extension == 'webm' or file.file|extension == 'mp4' %}
+		<video class="post-image" controls style="max-width:400px; max-height:400px; width:auto; height:auto;" preload="metadata">
+		<source src="/stnk/{{ file.file }}" type="video/{{ file.file|split('.')|last }}">Your browser does not support media playback.
+		</video>
+	{% elseif file.is_an_image %}
+		<a href="/stnk/{{ file.file }}" target="_blank">
+		<img class="post-image" src="/krth/{{ file.file|replace({ (file.file|split('.')|last): 'jpg' }) }}" style="width:{{ file.thumbwidth }}px;height:{{ file.thumbheight }}px" loading="lazy">
+		</a>
+	{% else %}
+		<a href="/stnk/{{ file.file }}" target="_blank" class="file">
+		<img class="post-image" src="/{% if config.file_icons[file.file|extension] %}{{ config.file_icons[file.file|extension] }}{% else %}{{ config.file_icons.default }}{% endif %}" alt="">
+		</a>
+	{% endif %}
+{% endif %}
+</div>
+{% endfor %}
+</div>
+{% endif %}
